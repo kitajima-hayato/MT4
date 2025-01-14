@@ -357,27 +357,119 @@ Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, f
 Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle)
 {
 	Matrix4x4 result;
+	Vector3 normalizedAxis = Normalize(axis); // 軸ベクトルを正規化
 	float c = std::cos(angle);
 	float s = std::sin(angle);
 	float t = 1.0f - c;
-	result.m[0][0] = t * axis.x * axis.x + c;
-	result.m[0][1] = t * axis.x * axis.y - s * axis.z;
-	result.m[0][2] = t * axis.x * axis.z + s * axis.y;
+
+	result.m[0][0] = t * normalizedAxis.x * normalizedAxis.x + c;
+	result.m[0][1] = t * normalizedAxis.x * normalizedAxis.y - s * normalizedAxis.z;
+	result.m[0][2] = t * normalizedAxis.x * normalizedAxis.z + s * normalizedAxis.y;
 	result.m[0][3] = 0.0f;
-	result.m[1][0] = t * axis.x * axis.y + s * axis.z;
-	result.m[1][1] = t * axis.y * axis.y + c;
-	result.m[1][2] = t * axis.y * axis.z - s * axis.x;
+
+	result.m[1][0] = t * normalizedAxis.x * normalizedAxis.y + s * normalizedAxis.z;
+	result.m[1][1] = t * normalizedAxis.y * normalizedAxis.y + c;
+	result.m[1][2] = t * normalizedAxis.y * normalizedAxis.z - s * normalizedAxis.x;
 	result.m[1][3] = 0.0f;
-	result.m[2][0] = t * axis.x * axis.z - s * axis.y;
-	result.m[2][1] = t * axis.y * axis.z + s * axis.x;
-	result.m[2][2] = t * axis.z * axis.z + c;
+
+	result.m[2][0] = t * normalizedAxis.x * normalizedAxis.z - s * normalizedAxis.y;
+	result.m[2][1] = t * normalizedAxis.y * normalizedAxis.z + s * normalizedAxis.x;
+	result.m[2][2] = t * normalizedAxis.z * normalizedAxis.z + c;
 	result.m[2][3] = 0.0f;
+
 	result.m[3][0] = 0.0f;
 	result.m[3][1] = 0.0f;
 	result.m[3][2] = 0.0f;
 	result.m[3][3] = 1.0f;
+
 	return result;
 }
+
+//Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to) {
+//	Vector3 fromNormalized = Normalize(from);
+//	Vector3 toNormalized = Normalize(to);
+//	float dotProduct = Dot(fromNormalized, toNormalized);
+//
+//	// from と to が平行または反平行の場合の特別な処理
+//	if (dotProduct > 0.9999f) {
+//		// from と to が同じ方向を向いている場合、単位行列を返す
+//		return Matrix4x4{
+//			1.0f, 0.0f, 0.0f, 0.0f,
+//			0.0f, 1.0f, 0.0f, 0.0f,
+//			0.0f, 0.0f, 1.0f, 0.0f,
+//			0.0f, 0.0f, 0.0f, 1.0f
+//		};
+//	}
+//	else if (dotProduct < -0.9999f) {
+//		// from と to が反対方向を向いている場合、任意の垂直ベクトルを軸として180度回転行列を作成
+//		Vector3 orthogonalAxis = (fabs(fromNormalized.x) > fabs(fromNormalized.z)) ? Vector3{ -fromNormalized.y, fromNormalized.x, 0.0f } : Vector3{ 0.0f, -fromNormalized.z, fromNormalized.y };
+//		orthogonalAxis = Normalize(orthogonalAxis);
+//		return MakeRotateAxisAngle(orthogonalAxis, 3.14159265358979323846f); // 180度回転
+//	}
+//
+//	Vector3 axis = Cross(fromNormalized, toNormalized);
+//	float angle = acos(dotProduct);
+//	return MakeRotateAxisAngle(axis, angle);
+//
+//	//Vector3 u = Normalize(from);
+//	//Vector3 v = Normalize(to);
+//	//Vector3 n = Cross(u, v); // 回転軸
+//	//float cosTheta = Dot(u, v); // cosθ
+//	//float sinTheta = Length(Cross(u, v)); // sinθ
+//	//if (sinTheta == 0.0f) {
+//	//	return MakeIdentity4x4();
+//	//}
+//	//else if (cosTheta < 0.0f) {
+//	//	// 180度回転
+//	//	n = Normalize(Vector3{ 1.0f, 0.0f, 0.0f } + u);
+//	//}
+//	//Vector3 axis = Cross(u, v);
+//	//float angle = std::acos(cosTheta);
+//	//return MakeRotateAxisAngle(axis, angle);
+//
+//	//Matrix4x4 R;
+//	//R.m[0][0] = (n.x * n.x) * (1 - cosTheta) + cosTheta;
+//	//R.m[0][1] = (n.x * n.y) * (1 - cosTheta) + n.z * sinTheta;
+//	//R.m[0][2] = (n.x * n.z) * (1 - cosTheta) - n.y * sinTheta;
+//	//R.m[1][0] = (n.x * n.y) * (1 - cosTheta) - n.z * sinTheta;
+//	//R.m[1][1] = (n.y * n.y) * (1 - cosTheta) + cosTheta;
+//	//R.m[1][2] = (n.y * n.z) * (1 - cosTheta) + n.x * sinTheta;
+//	//R.m[2][0] = (n.x * n.z) * (1 - cosTheta) + n.y * sinTheta;
+//	//R.m[2][1] = (n.y * n.z) * (1 - cosTheta) - n.x * sinTheta;
+//	//R.m[2][2] = (n.z * n.z) * (1 - cosTheta) + cosTheta;
+//
+//}
+Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to)
+{
+	Vector3 fromNormalized = Normalize(from);
+	Vector3 toNormalized = Normalize(to);
+	float dotProduct = Dot(fromNormalized, toNormalized);
+
+	// from と to が平行または反平行の場合の特別な処理
+	if (dotProduct > 0.9999f) {
+		// from と to が同じ方向を向いている場合、単位行列を返す
+		return Matrix4x4{
+			1.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 1.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f
+		};
+	}
+	else if (dotProduct < -0.9999f) {
+		// from と to が反対方向を向いている場合、任意の垂直ベクトルを軸として180度回転行列を作成
+		Vector3 orthogonalAxis = (fabs(fromNormalized.x) > fabs(fromNormalized.z)) ? Vector3{ -fromNormalized.y, fromNormalized.x, 0.0f } : Vector3{ 0.0f, -fromNormalized.z, fromNormalized.y };
+		orthogonalAxis = Normalize(orthogonalAxis);
+		return MakeRotateAxisAngle(orthogonalAxis, 3.14159265358979323846f); // 180度回転
+	}
+
+	Vector3 axis = Cross(fromNormalized, toNormalized);
+	float angle = acos(dotProduct);
+	return MakeRotateAxisAngle(axis, angle);
+}
+
+
+
+
 Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix) {
 	Vector3 result;
 	result.x = vector.x * matrix.m[0][0] + vector.y * matrix.m[1][0] + vector.z * matrix.m[2][0] + 1.0f * matrix.m[3][0];
@@ -465,3 +557,9 @@ Vector3 Multiply(float scalar, const Vector3& v)
 	return result;
 }
 
+void PrintMatrix(const Matrix4x4& matrix, int startX, int startY, const char* label) {
+	Novice::ScreenPrintf(startX, startY, label);
+	for (int i = 0; i < 4; i++) {
+		Novice::ScreenPrintf(startX, startY + 20 + i * 20, "%.3f %.3f %.3f %.3f", matrix.m[0][i], matrix.m[1][i], matrix.m[2][i], matrix.m[3][i]);
+	}
+}

@@ -5,7 +5,7 @@
 #include <math.h>
 #include <corecrt_math.h>
 #include <corecrt_math_defines.h>
-
+#include<Novice.h>
 #include"Vector3.h"
 #include"algorithm"
 #include"MathStruct.h"
@@ -90,7 +90,8 @@ Matrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearClip
 Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, float minDepth, float maxDepth);
 // 任意軸回転行列
 Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle);
-
+// 任意軸の回転行列
+Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to);
 // 同時座標変換
 Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
 // クロス積
@@ -114,4 +115,7 @@ Vector3 Subtract(const Vector3& v1, const Vector3& v2);
 //
 Vector3 Multiply(float scalar, const Vector3& v);
 
+
+// 行列の表示
+void PrintMatrix(const Matrix4x4& matrix, int startX, int startY, const char* label);
 
