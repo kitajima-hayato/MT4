@@ -1,16 +1,15 @@
 #pragma once
 #include "Vector3.h"
 #include "MakeMatrix.h"
-	struct Quaternion
-	{
-		float x;
-		float y;
-		float z;
-		float w;
-	};
+struct Quaternion
+{
+	float x;
+	float y;
+	float z;
+	float w;
+};
 class CalcQuaternion
 {
-
 public:
 	CalcQuaternion();
 	~CalcQuaternion();
@@ -28,7 +27,7 @@ public:
 	Quaternion Inverse(const Quaternion& quaternion);
 
 	// 任意軸回転を表すクォータニオンを生成
-	Quaternion MakeRoteteQuaternion(const Vector3& axis,float angle);
+	Quaternion MakeRoteteQuaternion(const Vector3& axis, float angle);
 
 	// ベクトルをクォータニオンで回転させた結果のベクトルを返す
 	Vector3 RotateVector(const Vector3& v, const Quaternion& q);

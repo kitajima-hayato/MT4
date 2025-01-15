@@ -18,7 +18,7 @@ Quaternion CalcQuaternion::Multiply(const Quaternion& lhs, const Quaternion& rhs
 	result.z = lhs.x * rhs.y - lhs.y * rhs.x + lhs.z * rhs.w + lhs.w * rhs.z;
 	result.w = -lhs.x * rhs.x - lhs.y * rhs.y - lhs.z * rhs.z + lhs.w * rhs.w;
 	return result;
-	
+
 }
 
 Quaternion CalcQuaternion::Identity()
