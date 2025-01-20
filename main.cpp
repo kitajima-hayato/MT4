@@ -17,7 +17,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	CalcQuaternion calcQuaternion;
 
 	Quaternion rotation1 = calcQuaternion.MakeRoteteAxisAngleQuaternion({ 0.71f,0.71f,0.0f }, 0.3f);
-	Quaternion rotation2 = calcQuaternion.MakeRoteteAxisAngleQuaternion({ 0.71f,0.0f,0.71f }, 3.141592f);
+	Quaternion rotation2 = { -rotation1 };
 
 
 	Quaternion interpolation0 = calcQuaternion.Slerp(rotation1, rotation2, 0.0f);

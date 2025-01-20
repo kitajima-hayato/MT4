@@ -154,6 +154,18 @@ Quaternion CalcQuaternion::Slerp(const Quaternion& q1, const Quaternion& q2, flo
 
     // シータを計算
     float theta = acos(dot);       // θ = cos^(-1)(dot)
+
+    // θがほぼ0の場合、線形補間を使用
+    if (theta < 0.0001f) {
+        Quaternion result = {
+            q1.x + t * (q2Copy.x - q1.x),
+            q1.y + t * (q2Copy.y - q1.y),
+            q1.z + t * (q2Copy.z - q1.z),
+            q1.w + t * (q2Copy.w - q1.w)
+        };
+        return result.Normalized();  // 正規化を適用
+    }
+
     float sinTheta = sqrt(1.0f - dot * dot); // sin(θ)
 
     // 補間係数を計算
@@ -169,6 +181,7 @@ Quaternion CalcQuaternion::Slerp(const Quaternion& q1, const Quaternion& q2, flo
     };
     return result.Normalized();  // 正規化を適用して返す
 }
+
 
 void CalcQuaternion::PrintQuaternion(const Quaternion& q, int x, int y, const char* label)
 {
