@@ -118,4 +118,6 @@ Vector3 Multiply(float scalar, const Vector3& v);
 
 // 行列の表示
 void PrintMatrix(const Matrix4x4& matrix, int startX, int startY, const char* label);
+// ベクトルの表示
+void PrintVector3(const Vector3& v, int startX, int startY, const char* label);
 

@@ -35,6 +35,8 @@ public:
 	// クォータニオン空間行列を求める
 	Matrix4x4 MakeRotateMatrix(const Quaternion& quaternion);
 
+	void PrintQuaternion(const Quaternion& q, int x, int y, const char* label);
+
 	// クォータニオンの回転
 	//Quaternion RotateQuaternion(const Quaternion& q, float radian, const Quaternion& axis);
 	//// クォータニオンの回転
@@ -53,5 +55,7 @@ public:
 	//Quaternion RotateQuaternion(const Quaternion& q, float radian, const Quaternion& axis);
 	//// クォータニオンの回転
 	//Quaternion RotateQuaternion(const Quaternion& q, float radian, const Vector3& axis, const Vector3& center);
+
+	
 };
 

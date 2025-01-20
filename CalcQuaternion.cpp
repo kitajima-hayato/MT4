@@ -127,3 +127,8 @@ Matrix4x4 CalcQuaternion::MakeRotateMatrix(const Quaternion& quaternion)
 	return result;
 }
 
+
+void CalcQuaternion::PrintQuaternion(const Quaternion& q, int x, int y, const char* label)
+{
+	Novice::ScreenPrintf(x, y, "%s = { %.2f, %.2f, %.2f, %.2f }", label, q.x, q.y, q.z, q.w);
+}

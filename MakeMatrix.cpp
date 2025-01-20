@@ -472,16 +472,17 @@ Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to)
 
 Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix) {
 	Vector3 result;
-	result.x = vector.x * matrix.m[0][0] + vector.y * matrix.m[1][0] + vector.z * matrix.m[2][0] + 1.0f * matrix.m[3][0];
-	result.y = vector.x * matrix.m[0][1] + vector.y * matrix.m[1][1] + vector.z * matrix.m[2][1] + 1.0f * matrix.m[3][1];
-	result.z = vector.x * matrix.m[0][2] + vector.y * matrix.m[1][2] + vector.z * matrix.m[2][2] + 1.0f * matrix.m[3][2];
-	float w = vector.x * matrix.m[0][3] + vector.y * matrix.m[1][3] + vector.z * matrix.m[2][3] + 1.0f * matrix.m[3][3];
+	result.x = vector.x * matrix.m[0][0] + vector.y * matrix.m[0][1] + vector.z * matrix.m[0][2] + 1.0f * matrix.m[0][3];
+	result.y = vector.x * matrix.m[1][0] + vector.y * matrix.m[1][1] + vector.z * matrix.m[1][2] + 1.0f * matrix.m[1][3];
+	result.z = vector.x * matrix.m[2][0] + vector.y * matrix.m[2][1] + vector.z * matrix.m[2][2] + 1.0f * matrix.m[2][3];
+	float w = vector.x * matrix.m[3][0] + vector.y * matrix.m[3][1] + vector.z * matrix.m[3][2] + 1.0f * matrix.m[3][3];
 	assert(w != 0.0f);
 	result.x /= w;
 	result.y /= w;
 	result.z /= w;
 	return result;
 }
+
 
 Vector3 Project(const Vector3 v1, const Vector3& v2)
 {
@@ -562,4 +563,8 @@ void PrintMatrix(const Matrix4x4& matrix, int startX, int startY, const char* la
 	for (int i = 0; i < 4; i++) {
 		Novice::ScreenPrintf(startX, startY + 20 + i * 20, "%.3f %.3f %.3f %.3f", matrix.m[0][i], matrix.m[1][i], matrix.m[2][i], matrix.m[3][i]);
 	}
+}
+
+void PrintVector3(const Vector3& v, int x, int y, const char* label) {
+	Novice::ScreenPrintf(x, y, "%s = { %.2f, %.2f, %.2f }", label, v.x, v.y, v.z);
 }

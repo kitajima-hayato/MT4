@@ -16,11 +16,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	char preKeys[256] = { 0 };
 	CalcQuaternion calcQuaternion;
 
-	Quaternion rotation = calcQuaternion.MakeRoteteAxisAngleQuaternion(Normalize(Vector3{1.0f,0.4f,-0.2f}),0.45f);
+	Quaternion rotation = calcQuaternion.MakeRoteteAxisAngleQuaternion(
+		Normalize(Vector3{1.0f,0.4f,-0.2f}),0.45f);
 	Vector3 pointY = { 2.1f,-0.9f,1.3f };
 	Matrix4x4 rotateMatrix = calcQuaternion.MakeRotateMatrix(rotation);
 	Vector3 rotateByQuaternion = calcQuaternion.RotateVector(pointY, rotation);
 	Vector3 rotateByMatrix = Transform(pointY, rotateMatrix);
+
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
 		// フレームの開始
@@ -42,6 +44,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓描画処理ここから
 		///
 
+		calcQuaternion.PrintQuaternion(rotation, 10, 10, "rotation");
+		PrintMatrix(rotateMatrix, 10, 50, "rotateMatrix");
+		PrintVector3(rotateByQuaternion, 10, 150, "rotateByQuaternion");
+		PrintVector3(rotateByMatrix, 10, 170, "rotateByMatrix");
 
 
 		///
