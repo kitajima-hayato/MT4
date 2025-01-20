@@ -74,7 +74,7 @@ Quaternion CalcQuaternion::Inverse(const Quaternion& quaternion)
 	return result;
 }
 
-Quaternion CalcQuaternion::MakeRoteteQuaternion(const Vector3& axis, float angle)
+Quaternion CalcQuaternion::MakeRoteteAxisAngleQuaternion(const Vector3& axis, float angle)
 {
 	// 任意軸回転を表すクォータニオンを生成
 	Quaternion q;

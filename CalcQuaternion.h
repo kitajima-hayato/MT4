@@ -27,7 +27,7 @@ public:
 	Quaternion Inverse(const Quaternion& quaternion);
 
 	// 任意軸回転を表すクォータニオンを生成
-	Quaternion MakeRoteteQuaternion(const Vector3& axis, float angle);
+	Quaternion MakeRoteteAxisAngleQuaternion(const Vector3& axis, float angle);
 
 	// ベクトルをクォータニオンで回転させた結果のベクトルを返す
 	Vector3 RotateVector(const Vector3& v, const Quaternion& q);

@@ -1,6 +1,7 @@
 #include <Novice.h>
 #include "MakeMatrix.h"
 #include "MathStruct.h"
+#include "CalcQuaternion.h"
 
 const char kWindowTitle[] = "学籍番号";
 
@@ -13,17 +14,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// キー入力結果を受け取る箱
 	char keys[256] = { 0 };
 	char preKeys[256] = { 0 };
+	CalcQuaternion calcQuaternion;
 
-	Vector3 from0 = Normalize(Vector3{ 1.0f, 0.7f, 0.5f });
-	Vector3 to0 = -from0;
-	Vector3 from1 = Normalize(Vector3{ -0.6f, 0.9f, 0.2f });
-	Vector3 to1 = Normalize(Vector3{ 0.4f, 0.7f, -0.5f });
-	Matrix4x4 rotateMatrix0 = DirectionToDirection(
-		Normalize(Vector3{ 1.0f,0.0f,0.0f }), Normalize(Vector3{ -1.0f,0.0f,0.0f }));
-	Matrix4x4 rotateMatrix1 = DirectionToDirection(from0, to0);
-	Matrix4x4 rotateMatrix2 = DirectionToDirection(from1, to1);
-
-
+	Quaternion rotation = calcQuaternion.MakeRoteteAxisAngleQuaternion(Normalize(Vector3{1.0f,0.4f,-0.2f}),0.45f);
+	Vector3 pointY = { 2.1f,-0.9f,1.3f };
+	Matrix4x4 rotateMatrix = calcQuaternion.MakeRotateMatrix(rotation);
+	Vector3 rotateByQuaternion = calcQuaternion.RotateVector(pointY, rotation);
+	Vector3 rotateByMatrix = Transform(pointY, rotateMatrix);
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
 		// フレームの開始
@@ -44,10 +41,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓描画処理ここから
 		///
-
-		PrintMatrix(rotateMatrix0, 10, 0, "rotateMatrix0");
-		PrintMatrix(rotateMatrix1, 10, 100, "rotateMatrix1");
-		PrintMatrix(rotateMatrix2, 10, 200, "rotateMatrix2");
 
 
 
