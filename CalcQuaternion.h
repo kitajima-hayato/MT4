@@ -1,13 +1,39 @@
 #pragma once
 #include "Vector3.h"
 #include "MakeMatrix.h"
-struct Quaternion
-{
+struct Quaternion {
 	float x;
 	float y;
 	float z;
 	float w;
+
+	// 演算子オーバーロードの追加
+	Quaternion operator*(float scalar) const {
+		return { x * scalar, y * scalar, z * scalar, w * scalar };
+	}
+
+	Quaternion operator+(const Quaternion& other) const {
+		return { x + other.x, y + other.y, z + other.z, w + other.w };
+	}
+
+	Quaternion operator/(float scalar) const {
+		return { x / scalar, y / scalar, z / scalar, w / scalar };
+	}
+
+	// 正規化メソッドの追加
+	Quaternion Normalized() const {
+		float norm = sqrt(x * x + y * y + z * z + w * w);
+		return { x / norm, y / norm, z / norm, w / norm };
+	}
+
+	// 単項マイナス演算子のオーバーロードの追加
+	Quaternion operator-() const {
+		return { -x, -y, -z, -w };
+	}
 };
+
+
+
 class CalcQuaternion
 {
 public:
@@ -35,6 +61,10 @@ public:
 	// クォータニオン空間行列を求める
 	Matrix4x4 MakeRotateMatrix(const Quaternion& quaternion);
 
+	// 球面線形補間 // Spherical Linear Interpolation
+	Quaternion Slerp(const Quaternion& q1, const Quaternion& q2, float t);
+
+	// クォータニオンの表示
 	void PrintQuaternion(const Quaternion& q, int x, int y, const char* label);
 
 	// クォータニオンの回転

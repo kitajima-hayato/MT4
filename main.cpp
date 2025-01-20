@@ -16,12 +16,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	char preKeys[256] = { 0 };
 	CalcQuaternion calcQuaternion;
 
-	Quaternion rotation = calcQuaternion.MakeRoteteAxisAngleQuaternion(
-		Normalize(Vector3{1.0f,0.4f,-0.2f}),0.45f);
-	Vector3 pointY = { 2.1f,-0.9f,1.3f };
-	Matrix4x4 rotateMatrix = calcQuaternion.MakeRotateMatrix(rotation);
-	Vector3 rotateByQuaternion = calcQuaternion.RotateVector(pointY, rotation);
-	Vector3 rotateByMatrix = Transform(pointY, rotateMatrix);
+	Quaternion rotation1 = calcQuaternion.MakeRoteteAxisAngleQuaternion({ 0.71f,0.71f,0.0f }, 0.3f);
+	Quaternion rotation2 = calcQuaternion.MakeRoteteAxisAngleQuaternion({ 0.71f,0.0f,0.71f }, 3.141592f);
+
+
+	Quaternion interpolation0 = calcQuaternion.Slerp(rotation1, rotation2, 0.0f);
+	Quaternion interpolation1 = calcQuaternion.Slerp(rotation1, rotation2, 0.3f);
+	Quaternion interpolation2 = calcQuaternion.Slerp(rotation1, rotation2, 0.5f);
+	Quaternion interpolation3 = calcQuaternion.Slerp(rotation1, rotation2, 0.7f);
+	Quaternion interpolation4 = calcQuaternion.Slerp(rotation1, rotation2, 1.0f);
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
@@ -44,10 +47,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓描画処理ここから
 		///
 
-		calcQuaternion.PrintQuaternion(rotation, 10, 10, "rotation");
-		PrintMatrix(rotateMatrix, 10, 50, "rotateMatrix");
-		PrintVector3(rotateByQuaternion, 10, 150, "rotateByQuaternion");
-		PrintVector3(rotateByMatrix, 10, 170, "rotateByMatrix");
+
+		calcQuaternion.PrintQuaternion(interpolation0, 10, 10, "interpolation0");
+		calcQuaternion.PrintQuaternion(interpolation1, 10, 30, "interpolation1");
+		calcQuaternion.PrintQuaternion(interpolation2, 10, 50, "interpolation2");
+		calcQuaternion.PrintQuaternion(interpolation3, 10, 70, "interpolation3");
+		calcQuaternion.PrintQuaternion(interpolation4, 10, 90, "interpolation4");
 
 
 		///
